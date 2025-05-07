@@ -2,4 +2,5 @@
 *.cmd text eol=crlf
 
 docker-compose.yaml filter=git-crypt diff=git-crypt
+pom.xml filter=git-crypt diff=git-crypt
 src/main/resources/application.properties filter=git-crypt diff=git-crypt
