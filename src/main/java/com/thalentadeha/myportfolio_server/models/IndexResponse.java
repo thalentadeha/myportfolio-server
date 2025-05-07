@@ -6,6 +6,7 @@ import java.util.List;
 
 public class IndexResponse {
     private MyPersonalData myData;
+    private MyDataUrl myDataUrl;
     private List<MyCertificate> myCertificates;
     private List<MyEducation> myEducations;
     private List<MyExperience> myExperiences;
@@ -22,6 +23,14 @@ public class IndexResponse {
 
     public void setMyData(MyPersonalData myData) {
         this.myData = myData;
+    }
+
+    public MyDataUrl getMyDataUrls() {
+        return myDataUrl;
+    }
+
+    public void setMyDataUrls(MyDataUrl myDataUrl) {
+        this.myDataUrl = myDataUrl;
     }
 
     public List<MyCertificate> getMyCertificates() {

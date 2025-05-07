@@ -1,5 +1,7 @@
 package com.thalentadeha.myportfolio_server.models.jpa;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToMany;
@@ -13,6 +15,7 @@ public class ProjectCategory {
     private String category;
 
     @ManyToMany(mappedBy = "categories")
+    @JsonIgnore
     private Set<MyProject> projects = new HashSet<>();
 
     public ProjectCategory() {

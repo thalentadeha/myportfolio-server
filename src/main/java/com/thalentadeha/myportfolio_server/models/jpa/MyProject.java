@@ -1,5 +1,6 @@
 package com.thalentadeha.myportfolio_server.models.jpa;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 
 import java.util.HashSet;
@@ -21,6 +22,7 @@ public class MyProject {
     private Set<ProjectCategory> categories = new HashSet<>();
 
     private String pictureUrl;
+    private String url;
 
     public MyProject() {
     }
@@ -55,5 +57,13 @@ public class MyProject {
 
     public void setPictureUrl(String pictureUrl) {
         this.pictureUrl = pictureUrl;
+    }
+
+    public String getUrl() {
+        return url;
+    }
+
+    public void setUrl(String url) {
+        this.url = url;
     }
 }

@@ -1,5 +1,6 @@
 package com.thalentadeha.myportfolio_server.models.jpa;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.annotation.Nullable;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
@@ -9,6 +10,7 @@ import java.util.Date;
 @Entity
 public class MyCertificate {
     @Id
+    @JsonProperty("ID")
     private String ID;
     private String name;
     private String issuer;
