@@ -3,10 +3,8 @@ package com.thalentadeha.myportfolio_server.controller;
 import com.thalentadeha.myportfolio_server.models.IndexResponse;
 import com.thalentadeha.myportfolio_server.service.IndexService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @CrossOrigin
@@ -18,5 +16,10 @@ public class IndexController {
     @GetMapping
     public IndexResponse index(){
         return indexService.getAllData();
+    }
+
+    @PostMapping("/ping")
+    public String ping(){
+        return "Succesfully connected";
     }
 }
