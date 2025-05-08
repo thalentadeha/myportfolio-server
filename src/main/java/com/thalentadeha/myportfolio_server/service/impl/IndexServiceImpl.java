@@ -76,7 +76,9 @@ public class IndexServiceImpl implements IndexService {
         }
         response.setMyCertificates(myCertificateRepo.findAll());
         List<MyEducation> myEducationList = myEducationRepo.findAll();
-        myEducationList.sort((m1, m2) -> m2.getEndDate().compareTo(m1.getEndDate()));
+        if(myEducationList != null){
+            myEducationList.sort((m1, m2) -> m2.getEndDate().compareTo(m1.getEndDate()));
+        }
         response.setMyEducations(myEducationList);
         response.setMyExperiences(myExperienceRepo.findAll());
         response.setMyProjects(myProjectRepo.findAll());
