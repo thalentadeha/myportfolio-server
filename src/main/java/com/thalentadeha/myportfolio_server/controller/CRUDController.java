@@ -14,8 +14,9 @@ public class CRUDController {
     private CRUDService crudService;
 
     @PostMapping("/add-myUrl")
-    public ResponseEntity addMyUrl(@RequestBody MyDataUrl myDataUrl){
+    public ResponseEntity addMyUrl(@RequestHeader String key, @RequestBody MyDataUrl myDataUrl){
         try{
+            crudService.checkSecurity(key);
             crudService.addMyUrl(myDataUrl);
         } catch (ApiException e){
             return ResponseEntity.status(e.getStatus()).body(e);
@@ -25,8 +26,9 @@ public class CRUDController {
     }
 
     @PutMapping("/update-myUrl")
-    public ResponseEntity updateMyUrl(@RequestBody MyDataUrl myDataUrl){
+    public ResponseEntity updateMyUrl(@RequestHeader String key, @RequestBody MyDataUrl myDataUrl){
         try{
+            crudService.checkSecurity(key);
             crudService.updateMyUrl(myDataUrl);
         } catch (ApiException e){
             return ResponseEntity.status(e.getStatus()).body(e);
@@ -36,8 +38,9 @@ public class CRUDController {
     }
 
     @PostMapping("/add-certificate")
-    public ResponseEntity addCertificate(@RequestBody MyCertificate certificate){
+    public ResponseEntity addCertificate(@RequestHeader String key, @RequestBody MyCertificate certificate){
         try{
+            crudService.checkSecurity(key);
             crudService.addCertificate(certificate);
         } catch (ApiException e){
             return ResponseEntity.status(e.getStatus()).body(e);
@@ -47,8 +50,9 @@ public class CRUDController {
     }
 
     @PostMapping("/add-education")
-    public ResponseEntity addEducation(@RequestBody MyEducation education){
+    public ResponseEntity addEducation(@RequestHeader String key, @RequestBody MyEducation education){
         try{
+            crudService.checkSecurity(key);
             crudService.addEducation(education);
         } catch (ApiException e){
             return ResponseEntity.status(e.getStatus()).body(e);
@@ -58,8 +62,9 @@ public class CRUDController {
     }
 
     @PostMapping("/add-experience")
-    public ResponseEntity addExperience(@RequestBody MyExperience experience){
+    public ResponseEntity addExperience(@RequestHeader String key, @RequestBody MyExperience experience){
         try{
+            crudService.checkSecurity(key);
             crudService.addExperience(experience);
         } catch (ApiException e){
             return ResponseEntity.status(e.getStatus()).body(e);
@@ -69,8 +74,9 @@ public class CRUDController {
     }
 
     @PostMapping("/add-project")
-    public ResponseEntity addProject(@RequestBody MyProject project){
+    public ResponseEntity addProject(@RequestHeader String key, @RequestBody MyProject project){
         try{
+            crudService.checkSecurity(key);
             crudService.addProject(project);
         } catch (ApiException e){
             return ResponseEntity.status(e.getStatus()).body(e);
@@ -80,8 +86,9 @@ public class CRUDController {
     }
 
     @PostMapping("/add-skill")
-    public ResponseEntity addSkill(@RequestBody MySkill skill){
+    public ResponseEntity addSkill(@RequestHeader String key, @RequestBody MySkill skill){
         try{
+            crudService.checkSecurity(key);
             crudService.addSkill(skill);
         } catch (ApiException e){
             return ResponseEntity.status(e.getStatus()).body(e);
@@ -91,8 +98,9 @@ public class CRUDController {
     }
 
     @PostMapping("/add-projectCategory")
-    public ResponseEntity addProjectCategory(@RequestBody ProjectCategory projectCategory){
+    public ResponseEntity addProjectCategory(@RequestHeader String key, @RequestBody ProjectCategory projectCategory){
         try{
+            crudService.checkSecurity(key);
             crudService.addProjectCategory(projectCategory);
         } catch (ApiException e){
             return ResponseEntity.status(e.getStatus()).body(e);
