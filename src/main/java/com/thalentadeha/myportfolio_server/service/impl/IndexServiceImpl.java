@@ -4,14 +4,13 @@ import com.thalentadeha.myportfolio_server.jpa.*;
 import com.thalentadeha.myportfolio_server.models.IndexResponse;
 import com.thalentadeha.myportfolio_server.models.MyPersonalData;
 import com.thalentadeha.myportfolio_server.models.jpa.MyDataUrl;
+import com.thalentadeha.myportfolio_server.models.jpa.MyEducation;
 import com.thalentadeha.myportfolio_server.service.IndexService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
 
 @Service
 public class IndexServiceImpl implements IndexService {
@@ -76,7 +75,9 @@ public class IndexServiceImpl implements IndexService {
             response.setMyDataUrls(myDataUrl);
         }
         response.setMyCertificates(myCertificateRepo.findAll());
-        response.setMyEducations(myEducationRepo.findAll());
+        List<MyEducation> myEducationList = myEducationRepo.findAll();
+        myEducationList.sort((m1, m2) -> m2.getEndDate().compareTo(m1.getEndDate()));
+        response.setMyEducations(myEducationList);
         response.setMyExperiences(myExperienceRepo.findAll());
         response.setMyProjects(myProjectRepo.findAll());
         response.setMySkills(mySkillRepo.findAll());
