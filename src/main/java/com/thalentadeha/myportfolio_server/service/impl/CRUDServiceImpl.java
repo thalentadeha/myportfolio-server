@@ -5,6 +5,7 @@ import com.thalentadeha.myportfolio_server.jpa.*;
 import com.thalentadeha.myportfolio_server.models.jpa.*;
 import com.thalentadeha.myportfolio_server.service.CRUDService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -29,6 +30,9 @@ public class CRUDServiceImpl implements CRUDService {
 
     @Autowired
     private ProjectCategoryRepo projectCategoryRepo;
+
+    @Value("${my.key}")
+    private String myKey;
 
     public void addMyUrl(MyDataUrl myUrl) {
         MyDataUrl savedUrl = myDataUrlRepo.findById(1L).orElse(null);
@@ -140,6 +144,12 @@ public class CRUDServiceImpl implements CRUDService {
             projectCategoryRepo.save(projectCategory);
         } catch (Exception e){
             throw new ApiException("failed to save new projectCategory", 500);
+        }
+    }
+
+    public void checkSecurity(String key) {
+        if(key == null || !key.equals(myKey)){
+            throw new ApiException("key not valid", 401);
         }
     }
 }

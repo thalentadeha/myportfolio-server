@@ -18,4 +18,6 @@ public interface CRUDService {
     public void addSkill(MySkill skill);
 
     public void addProjectCategory(ProjectCategory projectCategory);
+
+    public void checkSecurity(String key);
 }
