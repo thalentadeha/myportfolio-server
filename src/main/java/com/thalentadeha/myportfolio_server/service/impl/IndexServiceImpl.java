@@ -67,7 +67,7 @@ public class IndexServiceImpl implements IndexService {
 
         try {
             List<MyEducation> myEducationList = new ArrayList<>(myEducationRepo.findAll());
-            myEducationList.sort((m1, m2) -> m2.getEndDate().compareTo(m1.getEndDate()));
+            //myEducationList.sort((m1, m2) -> m2.getEndDate().compareTo(m1.getEndDate()));
             response.setMyEducations(myEducationList);
             log.info("Educations loaded and sorted");
         } catch (Exception e) {
