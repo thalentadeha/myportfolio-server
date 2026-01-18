@@ -13,6 +13,19 @@ public class CRUDController {
     @Autowired
     private CRUDService crudService;
 
+    @PostMapping("/update-profile")
+    public ResponseEntity updateMyProfile(@RequestHeader String key, @RequestBody MyProfile myProfile){
+        try{
+            crudService.checkSecurity(key);
+            crudService.updateMyProfile(myProfile);
+        } catch (ApiException e){
+            return ResponseEntity.status(e.getStatus()).body(e);
+        }
+
+        return ResponseEntity.ok(myProfile);
+    }
+
+
     @PostMapping("/add-myUrl")
     public ResponseEntity addMyUrl(@RequestHeader String key, @RequestBody MyDataUrl myDataUrl){
         try{

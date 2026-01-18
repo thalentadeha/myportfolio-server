@@ -4,35 +4,41 @@ import com.thalentadeha.myportfolio_server.Exception.ApiException;
 import com.thalentadeha.myportfolio_server.jpa.*;
 import com.thalentadeha.myportfolio_server.models.jpa.*;
 import com.thalentadeha.myportfolio_server.service.CRUDService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 @Service
+@RequiredArgsConstructor
 public class CRUDServiceImpl implements CRUDService {
-    @Autowired
-    private MyDataUrlRepo myDataUrlRepo;
-
-    @Autowired
-    private MyCertificateRepo myCertificateRepo;
-
-    @Autowired
-    private MyEducationRepo myEducationRepo;
-
-    @Autowired
-    private MyExperienceRepo myExperienceRepo;
-
-    @Autowired
-    private MyProjectRepo myProjectRepo;
-
-    @Autowired
-    private MySkillRepo mySkillRepo;
-
-    @Autowired
-    private ProjectCategoryRepo projectCategoryRepo;
+    private final MyProfileRepo myProfileRepo;
+    private final MyDataUrlRepo myDataUrlRepo;
+    private final MyCertificateRepo myCertificateRepo;
+    private final MyEducationRepo myEducationRepo;
+    private final MyExperienceRepo myExperienceRepo;
+    private final MyProjectRepo myProjectRepo;
+    private final MySkillRepo mySkillRepo;
+    private final ProjectCategoryRepo projectCategoryRepo;
 
     @Value("${my.key}")
     private String myKey;
+
+    public void updateMyProfile(MyProfile myProfile) {
+        MyProfile savedProfile = myProfileRepo.findProfileByName(myProfile.getName());
+
+        try {
+            if (savedProfile == null) {
+                savedProfile = new MyProfile();
+                savedProfile.setName(myProfile.getName());
+
+            }
+            savedProfile.setDescription(myProfile.getDescription());
+            myProfileRepo.save(savedProfile);
+        } catch (Exception e){
+            throw new ApiException("failed to save profile", 500);
+        }
+    }
 
     public void addMyUrl(MyDataUrl myUrl) {
         MyDataUrl savedUrl = myDataUrlRepo.findById(1L).orElse(null);

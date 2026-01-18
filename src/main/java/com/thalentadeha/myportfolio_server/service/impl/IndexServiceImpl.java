@@ -5,80 +5,41 @@ import com.thalentadeha.myportfolio_server.models.IndexResponse;
 import com.thalentadeha.myportfolio_server.models.MyPersonalData;
 import com.thalentadeha.myportfolio_server.models.jpa.MyDataUrl;
 import com.thalentadeha.myportfolio_server.models.jpa.MyEducation;
+import com.thalentadeha.myportfolio_server.models.jpa.MyProfile;
 import com.thalentadeha.myportfolio_server.service.IndexService;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
+@RequiredArgsConstructor
 public class IndexServiceImpl implements IndexService {
-    @Value("${my.full.name}")
-    private String fullName;
-
-    @Value("${my.nickname}")
-    private String nickname;
-
-    @Value("${my.desc}")
-    private String desc;
-
-    @Value("${my.phone.number}")
-    private String phone;
-
-    @Value("${my.email}")
-    private String email;
-
-    @Value("${my.location}")
-    private String location;
-
-    @Value("${my.position}")
-    private String[] position;
-
-    @Autowired
-    private MyDataUrlRepo myDataUrlRepo;
-
-    @Autowired
-    private MyCertificateRepo myCertificateRepo;
-
-    @Autowired
-    private MyEducationRepo myEducationRepo;
-
-    @Autowired
-    private MyExperienceRepo myExperienceRepo;
-
-    @Autowired
-    private MyProjectRepo myProjectRepo;
-
-    @Autowired
-    private MySkillRepo mySkillRepo;
-
-    @Autowired
-    private ProjectCategoryRepo projectCategoryRepo;
+    private final MyProfileRepo myProfileRepo;
+    private final MyDataUrlRepo myDataUrlRepo;
+    private final MyCertificateRepo myCertificateRepo;
+    private final MyEducationRepo myEducationRepo;
+    private final MyExperienceRepo myExperienceRepo;
+    private final MyProjectRepo myProjectRepo;
+    private final MySkillRepo mySkillRepo;
+    private final ProjectCategoryRepo projectCategoryRepo;
 
     public IndexResponse getAllData(){
         IndexResponse response = new IndexResponse();
 
-        MyPersonalData myData = new MyPersonalData(
-                fullName,
-                nickname,
-                desc,
-                phone,
-                email,
-                location,
-                Arrays.asList(position)
-        );
+        List<MyProfile> myProfiles = myProfileRepo.findAll();
+
+        MyPersonalData myData = getMyPersonalData(myProfiles);
         response.setMyData(myData);
 
         MyDataUrl myDataUrl = myDataUrlRepo.findById(1L).orElse(null);
         if(myDataUrl != null){
-            response.setMyDataUrls(myDataUrl);
+            response.setMyDataUrl(myDataUrl);
         }
         response.setMyCertificates(myCertificateRepo.findAll());
         List<MyEducation> myEducationList = myEducationRepo.findAll();
-        if(myEducationList != null){
-            myEducationList.sort((m1, m2) -> m2.getEndDate().compareTo(m1.getEndDate()));
-        }
+        myEducationList.sort((m1, m2) -> m2.getEndDate().compareTo(m1.getEndDate()));
         response.setMyEducations(myEducationList);
         response.setMyExperiences(myExperienceRepo.findAll());
         response.setMyProjects(myProjectRepo.findAll());
@@ -86,5 +47,24 @@ public class IndexServiceImpl implements IndexService {
         response.setProjectCategories(projectCategoryRepo.findAll());
 
         return response;
+    }
+
+    private static MyPersonalData getMyPersonalData(List<MyProfile> myProfiles) {
+        Map<String, String> myProfileDatas = new HashMap<>();
+        for(MyProfile myProfile: myProfiles){
+            myProfileDatas.put(myProfile.getName(), myProfile.getDescription());
+        }
+
+        MyPersonalData myData = new MyPersonalData();
+        myData.setFullname(myProfileDatas.get("fullname"));
+        myData.setNickname(myProfileDatas.get("nickname"));
+        myData.setNickname(myProfileDatas.get("desc"));
+        myData.setEmail(myProfileDatas.get("email"));
+        myData.setPhone(myProfileDatas.get("phone"));
+        myData.setLocation(myProfileDatas.get("location"));
+        myData.setPosition(Arrays.stream(myProfileDatas.get("position").split(","))
+                .map(String::trim)
+                .collect(Collectors.toList()));
+        return myData;
     }
 }

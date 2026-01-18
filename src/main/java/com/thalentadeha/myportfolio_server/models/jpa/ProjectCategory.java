@@ -5,11 +5,15 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToMany;
+import lombok.Data;
+import lombok.RequiredArgsConstructor;
 
 import java.util.HashSet;
 import java.util.Set;
 
 @Entity
+@RequiredArgsConstructor
+@Data
 public class ProjectCategory {
     @Id
     private String category;
@@ -17,23 +21,4 @@ public class ProjectCategory {
     @ManyToMany(mappedBy = "categories")
     @JsonIgnore
     private Set<MyProject> projects = new HashSet<>();
-
-    public ProjectCategory() {
-    }
-
-    public String getCategory() {
-        return category;
-    }
-
-    public void setCategory(String category) {
-        this.category = category;
-    }
-
-    public Set<MyProject> getProjects() {
-        return projects;
-    }
-
-    public void setProjects(Set<MyProject> projects) {
-        this.projects = projects;
-    }
 }

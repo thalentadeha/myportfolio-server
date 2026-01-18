@@ -3,6 +3,8 @@ package com.thalentadeha.myportfolio_server.service;
 import com.thalentadeha.myportfolio_server.models.jpa.*;
 
 public interface CRUDService {
+    public void updateMyProfile(MyProfile myProfile);
+
     public void addMyUrl(MyDataUrl myUrl);
 
     public void updateMyUrl(MyDataUrl myDataUrl);
