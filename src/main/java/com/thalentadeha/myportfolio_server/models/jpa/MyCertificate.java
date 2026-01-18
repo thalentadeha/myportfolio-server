@@ -4,14 +4,14 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.annotation.Nullable;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
-import lombok.Data;
-import lombok.RequiredArgsConstructor;
+import lombok.*;
 
 import java.util.Date;
 
 @Entity
-@RequiredArgsConstructor
-@Data
+@Getter
+@Setter
+@NoArgsConstructor
 public class MyCertificate {
     @Id
     @JsonProperty("ID")

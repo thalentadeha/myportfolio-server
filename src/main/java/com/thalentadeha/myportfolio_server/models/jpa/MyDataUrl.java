@@ -4,14 +4,14 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import lombok.Data;
-import lombok.RequiredArgsConstructor;
+import lombok.*;
 
 import java.util.List;
 
 @Entity
-@RequiredArgsConstructor
-@Data
+@Getter
+@Setter
+@NoArgsConstructor
 public class MyDataUrl {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

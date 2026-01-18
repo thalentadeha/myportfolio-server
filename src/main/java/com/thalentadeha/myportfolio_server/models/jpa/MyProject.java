@@ -2,15 +2,15 @@ package com.thalentadeha.myportfolio_server.models.jpa;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
-import lombok.Data;
-import lombok.RequiredArgsConstructor;
+import lombok.*;
 
 import java.util.HashSet;
 import java.util.Set;
 
 @Entity
-@RequiredArgsConstructor
-@Data
+@Getter
+@Setter
+@NoArgsConstructor
 public class MyProject {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

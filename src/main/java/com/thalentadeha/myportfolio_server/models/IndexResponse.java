@@ -1,7 +1,7 @@
 package com.thalentadeha.myportfolio_server.models;
 
+import com.thalentadeha.myportfolio_server.models.dto.MyProjectDTO;
 import com.thalentadeha.myportfolio_server.models.jpa.*;
-import jakarta.persistence.Entity;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
 
@@ -15,7 +15,7 @@ public class IndexResponse {
     private List<MyCertificate> myCertificates;
     private List<MyEducation> myEducations;
     private List<MyExperience> myExperiences;
-    private List<MyProject> myProjects;
+    private List<MyProjectDTO> myProjects;
     private List<MySkill> mySkills;
     private List<ProjectCategory> projectCategories;
 }

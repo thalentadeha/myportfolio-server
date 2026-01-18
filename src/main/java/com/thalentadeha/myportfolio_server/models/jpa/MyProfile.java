@@ -1,12 +1,12 @@
 package com.thalentadeha.myportfolio_server.models.jpa;
 
 import jakarta.persistence.*;
-import lombok.Data;
-import lombok.RequiredArgsConstructor;
+import lombok.*;
 
 @Entity
-@RequiredArgsConstructor
-@Data
+@Getter
+@Setter
+@NoArgsConstructor
 public class MyProfile {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

@@ -3,9 +3,8 @@ package com.thalentadeha.myportfolio_server.service.impl;
 import com.thalentadeha.myportfolio_server.jpa.*;
 import com.thalentadeha.myportfolio_server.models.IndexResponse;
 import com.thalentadeha.myportfolio_server.models.MyPersonalData;
-import com.thalentadeha.myportfolio_server.models.jpa.MyDataUrl;
-import com.thalentadeha.myportfolio_server.models.jpa.MyEducation;
-import com.thalentadeha.myportfolio_server.models.jpa.MyProfile;
+import com.thalentadeha.myportfolio_server.models.dto.MyProjectDTO;
+import com.thalentadeha.myportfolio_server.models.jpa.*;
 import com.thalentadeha.myportfolio_server.service.IndexService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -67,7 +66,7 @@ public class IndexServiceImpl implements IndexService {
 
         try {
             List<MyEducation> myEducationList = new ArrayList<>(myEducationRepo.findAll());
-            //myEducationList.sort((m1, m2) -> m2.getEndDate().compareTo(m1.getEndDate()));
+            myEducationList.sort((m1, m2) -> m2.getEndDate().compareTo(m1.getEndDate()));
             response.setMyEducations(myEducationList);
             log.info("Educations loaded and sorted");
         } catch (Exception e) {
@@ -84,7 +83,12 @@ public class IndexServiceImpl implements IndexService {
         }
 
         try {
-            response.setMyProjects(new ArrayList<>(myProjectRepo.findAll()));
+            response.setMyProjects(
+                    myProjectRepo.findAllProjectWithCategory()
+                            .stream()
+                            .map(this::toDto)
+                            .toList()
+            );
             log.info("Projects loaded");
         } catch (Exception e) {
             log.error("Failed fetching Projects", e);
@@ -128,5 +132,20 @@ public class IndexServiceImpl implements IndexService {
                 .map(String::trim)
                 .collect(Collectors.toList()));
         return myData;
+    }
+
+    private MyProjectDTO toDto(MyProject p){
+        MyProjectDTO dto = new MyProjectDTO();
+        dto.setId(p.getId());
+        dto.setName(p.getName());
+        dto.setPictureUrl(p.getPictureUrl());
+        dto.setUrl(p.getUrl());
+        dto.setCategories(
+                p.getCategories()
+                        .stream()
+                        .map(ProjectCategory::getCategory)
+                        .toList()
+        );
+        return dto;
     }
 }
