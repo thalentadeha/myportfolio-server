@@ -37,14 +37,17 @@ public class IndexServiceImpl implements IndexService {
         if(myDataUrl != null){
             response.setMyDataUrl(myDataUrl);
         }
-        response.setMyCertificates(myCertificateRepo.findAll());
-        List<MyEducation> myEducationList = myEducationRepo.findAll();
+
+        response.setMyCertificates(new ArrayList<>(myCertificateRepo.findAll()));
+
+        List<MyEducation> myEducationList = new ArrayList<>(myEducationRepo.findAll());
         myEducationList.sort((m1, m2) -> m2.getEndDate().compareTo(m1.getEndDate()));
         response.setMyEducations(myEducationList);
-        response.setMyExperiences(myExperienceRepo.findAll());
-        response.setMyProjects(myProjectRepo.findAll());
-        response.setMySkills(mySkillRepo.findAll());
-        response.setProjectCategories(projectCategoryRepo.findAll());
+
+        response.setMyExperiences(new ArrayList<>(myExperienceRepo.findAll()));
+        response.setMyProjects(new ArrayList<>(myProjectRepo.findAll()));
+        response.setMySkills(new ArrayList<>(mySkillRepo.findAll()));
+        response.setProjectCategories(new ArrayList<>(projectCategoryRepo.findAll()));
 
         return response;
     }
@@ -58,7 +61,7 @@ public class IndexServiceImpl implements IndexService {
         MyPersonalData myData = new MyPersonalData();
         myData.setFullname(myProfileDatas.get("fullname"));
         myData.setNickname(myProfileDatas.get("nickname"));
-        myData.setNickname(myProfileDatas.get("desc"));
+        myData.setDesc(myProfileDatas.get("desc"));
         myData.setEmail(myProfileDatas.get("email"));
         myData.setPhone(myProfileDatas.get("phone"));
         myData.setLocation(myProfileDatas.get("location"));
