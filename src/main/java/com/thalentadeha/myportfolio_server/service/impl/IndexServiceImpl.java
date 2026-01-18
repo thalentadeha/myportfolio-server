@@ -75,7 +75,23 @@ public class IndexServiceImpl implements IndexService {
         }
 
         try {
-            response.setMyExperiences(new ArrayList<>(myExperienceRepo.findAll()));
+            List<MyExperience> myExperienceList = new ArrayList<>(myExperienceRepo.findAll());
+            myExperienceList.sort(
+                    (m1, m2) -> {
+                        //if both null, equal
+                        if (m1.getEndDate() == null && m2.getEndDate() == null) return 0;
+
+                        //if m1 null → m1 comes first
+                        if (m1.getEndDate() == null) return -1;
+
+                        //if m2 null → m2 comes first
+                        if (m2.getEndDate() == null) return 1;
+
+                        //both not null → compare normally (latest first)
+                        return m2.getEndDate().compareTo(m1.getEndDate());
+                    }
+            );
+            response.setMyExperiences(myExperienceList);
             log.info("Experiences loaded");
         } catch (Exception e) {
             log.error("Failed fetching Experiences", e);
