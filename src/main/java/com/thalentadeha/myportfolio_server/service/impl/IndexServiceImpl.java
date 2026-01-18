@@ -8,6 +8,7 @@ import com.thalentadeha.myportfolio_server.models.jpa.MyEducation;
 import com.thalentadeha.myportfolio_server.models.jpa.MyProfile;
 import com.thalentadeha.myportfolio_server.service.IndexService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
@@ -15,6 +16,7 @@ import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class IndexServiceImpl implements IndexService {
     private final MyProfileRepo myProfileRepo;
     private final MyDataUrlRepo myDataUrlRepo;
@@ -26,29 +28,86 @@ public class IndexServiceImpl implements IndexService {
     private final ProjectCategoryRepo projectCategoryRepo;
 
     public IndexResponse getAllData(){
+        log.info("Starting getAllData()");
+
         IndexResponse response = new IndexResponse();
 
-        List<MyProfile> myProfiles = myProfileRepo.findAll();
+        List<MyProfile> myProfiles;
+        try {
+            myProfiles = myProfileRepo.findAll();
+            log.info("Fetched MyProfile records: {}", myProfiles.size());
+        } catch (Exception e) {
+            log.error("Failed fetching MyProfile", e);
+            throw new RuntimeException("Database error: MyProfile fetch failed");
+        }
 
         MyPersonalData myData = getMyPersonalData(myProfiles);
         response.setMyData(myData);
 
-        MyDataUrl myDataUrl = myDataUrlRepo.findById(1L).orElse(null);
-        if(myDataUrl != null){
-            response.setMyDataUrl(myDataUrl);
+        try {
+            MyDataUrl myDataUrl = myDataUrlRepo.findById(1L).orElse(null);
+            if (myDataUrl != null) {
+                response.setMyDataUrl(myDataUrl);
+                log.info("MyDataUrl loaded");
+            } else {
+                log.warn("MyDataUrl with ID=1 not found");
+            }
+        } catch (Exception e) {
+            log.error("Failed fetching MyDataUrl", e);
+            throw new RuntimeException("Database error: MyDataUrl fetch failed");
         }
 
-        response.setMyCertificates(new ArrayList<>(myCertificateRepo.findAll()));
+        try {
+            response.setMyCertificates(new ArrayList<>(myCertificateRepo.findAll()));
+            log.info("Certificates loaded");
+        } catch (Exception e) {
+            log.error("Failed fetching Certificates", e);
+            throw new RuntimeException("Database error: Certificates fetch failed");
+        }
 
-        List<MyEducation> myEducationList = new ArrayList<>(myEducationRepo.findAll());
-        myEducationList.sort((m1, m2) -> m2.getEndDate().compareTo(m1.getEndDate()));
-        response.setMyEducations(myEducationList);
+        try {
+            List<MyEducation> myEducationList = new ArrayList<>(myEducationRepo.findAll());
+            myEducationList.sort((m1, m2) -> m2.getEndDate().compareTo(m1.getEndDate()));
+            response.setMyEducations(myEducationList);
+            log.info("Educations loaded and sorted");
+        } catch (Exception e) {
+            log.error("Failed fetching Educations", e);
+            throw new RuntimeException("Database error: Education fetch failed");
+        }
 
-        response.setMyExperiences(new ArrayList<>(myExperienceRepo.findAll()));
-        response.setMyProjects(new ArrayList<>(myProjectRepo.findAll()));
-        response.setMySkills(new ArrayList<>(mySkillRepo.findAll()));
-        response.setProjectCategories(new ArrayList<>(projectCategoryRepo.findAll()));
+        try {
+            response.setMyExperiences(new ArrayList<>(myExperienceRepo.findAll()));
+            log.info("Experiences loaded");
+        } catch (Exception e) {
+            log.error("Failed fetching Experiences", e);
+            throw new RuntimeException("Database error: Experience fetch failed");
+        }
 
+        try {
+            response.setMyProjects(new ArrayList<>(myProjectRepo.findAll()));
+            log.info("Projects loaded");
+        } catch (Exception e) {
+            log.error("Failed fetching Projects", e);
+            throw new RuntimeException("Database error: Project fetch failed");
+        }
+
+        try {
+            response.setMySkills(new ArrayList<>(mySkillRepo.findAll()));
+            log.info("Skills loaded");
+        } catch (Exception e) {
+            log.error("Failed fetching Skills", e);
+            throw new RuntimeException("Database error: Skill fetch failed");
+        }
+
+        try {
+            response.setProjectCategories(new ArrayList<>(projectCategoryRepo.findAll()));
+            log.info("Project categories loaded");
+        } catch (Exception e) {
+            log.error("Failed fetching Project Categories", e);
+            throw new RuntimeException("Database error: Category fetch failed");
+        }
+
+        log.info("getAllData() completed successfully");
         return response;
     }
 
