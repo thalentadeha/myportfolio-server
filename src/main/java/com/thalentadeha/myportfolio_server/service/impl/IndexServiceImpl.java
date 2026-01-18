@@ -66,7 +66,10 @@ public class IndexServiceImpl implements IndexService {
 
         try {
             List<MyEducation> myEducationList = new ArrayList<>(myEducationRepo.findAll());
-            myEducationList.sort((m1, m2) -> m2.getEndDate().compareTo(m1.getEndDate()));
+            myEducationList.sort(
+                    Comparator.comparing(MyEducation::getEndDate)
+                            .reversed()
+            );
             response.setMyEducations(myEducationList);
             log.info("Educations loaded and sorted");
         } catch (Exception e) {
@@ -77,19 +80,10 @@ public class IndexServiceImpl implements IndexService {
         try {
             List<MyExperience> myExperienceList = new ArrayList<>(myExperienceRepo.findAll());
             myExperienceList.sort(
-                    (m1, m2) -> {
-                        //if both null, equal
-                        if (m1.getEndDate() == null && m2.getEndDate() == null) return 0;
-
-                        //if m1 null → m1 comes first
-                        if (m1.getEndDate() == null) return -1;
-
-                        //if m2 null → m2 comes first
-                        if (m2.getEndDate() == null) return 1;
-
-                        //both not null → compare normally (latest first)
-                        return m2.getEndDate().compareTo(m1.getEndDate());
-                    }
+                    Comparator.comparing(
+                            MyExperience::getEndDate,
+                            Comparator.nullsFirst(Comparator.reverseOrder())
+                    )
             );
             response.setMyExperiences(myExperienceList);
             log.info("Experiences loaded");

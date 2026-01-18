@@ -3,15 +3,16 @@ package com.thalentadeha.myportfolio_server.controller;
 import com.thalentadeha.myportfolio_server.Exception.ApiException;
 import com.thalentadeha.myportfolio_server.models.jpa.*;
 import com.thalentadeha.myportfolio_server.service.CRUDService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("admin/api/v1")
+@RequiredArgsConstructor
 public class CRUDController {
-    @Autowired
-    private CRUDService crudService;
+    private final CRUDService crudService;
 
     @PostMapping("/update-profile")
     public ResponseEntity updateMyProfile(@RequestHeader String key, @RequestBody MyProfile myProfile){
